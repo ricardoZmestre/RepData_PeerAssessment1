@@ -5,8 +5,6 @@ output:
     keep_md: true
 ---
 
-# Reproducible Research: Peer Assessment 1
-
 ```{r globaloptions, echo=FALSE, results='markup', warning=FALSE, message=FALSE}
 library(dplyr)
 library(knitr)
@@ -16,12 +14,15 @@ opts_chunk$set(echo=FALSE, results='markup')
 
 ## Loading and preprocessing the data
 
-Loading from dataset **activity.zip**. The file can be found in [forked Git repo for the assignment] (https://github.com/ricardoZmestre/RepData_PeerAssessment1).
+Loading from dataset **activity.zip**. The file can be found in [forked Git repo for the assignment](https://github.com/ricardoZmestre/RepData_PeerAssessment1).
 
 ```{r dataloading}
+
 # read directly compressed file
 df <- read.csv(ff <- unz('activity.zip', 'activity.csv'), 
                colClasses = c('numeric', 'Date', 'numeric'))
+#close(ff)
+
 ```
 
 ## What is mean total number of steps taken per day?
@@ -41,7 +42,7 @@ hist(dfDay$steps, col='lightblue', breaks=10,
 
 ```
 
-The total number of steps taken per day is `r sprintf('%.0f', sum(dfDay$steps))`.
+The overall total number of steps taken per day is `r sprintf('%.0f', sum(dfDay$steps))`.
 
 The mean of the steps taken per day is `r sprintf('%.2f', mean(dfDay$steps))`.
 
@@ -63,33 +64,46 @@ par(mar=oldpar)
 
 ```
 
-The maximum meaqn number of steps per day is `r sprintf('%.2f', arrange(dfmeanMin, -steps)[[1,2]])`.
+The maximum mean number of steps per day is `r sprintf('%.2f', arrange(dfmeanMin, -steps)[[1,2]])`.
 
-The period is `r arrange(dfmeanMin, -steps)[[1,1]]`.
+The corresponding period is `r arrange(dfmeanMin, -steps)[[1,1]]`.
 
 ## Imputing missing values
 
-```{r question 3}
+NA imputations using linear fit.
+
+```{r question 3, results='asis'}
 ### Question 3
 
+library(xtable)
+
 dfnan <- df
+# Filling out with overall mean of steps
 dfnan$steps[is.na(df$steps)] <- mean(df$steps, na.rm=TRUE)
 
-dfnanDay <- dfnan %>%
-  filter(!is.na(steps)) %>%
-  group_by(date) %>%
-  summarise(steps=mean(steps))
+# Filling out with linear regression
+msteps <- lm(steps ~ interval, data=df, na.action=na.exclude)
+print(xtable(msteps), type=, 'html')
+fit <- predict(msteps, dfnan)
+dfnan$steps[is.na(df$steps)] <- fit[is.na(df$steps)]
 
+dfnanDay <- dfnan %>%
+  group_by(date) %>%
+  summarise(steps=sum(steps))
+
+```
+
+```{r histogram}
 hist(dfnanDay$steps, col='lightblue', breaks=10,
      main = 'Histogram', xlab='Mean Steps Per Day')
 
 ```
 
-The number of NaNs is `r sum(is.nan(dfnanDay$steps))`.
+The number of Nas in the original dataset is `r sum(is.na(df$steps))`.
 
-The mean of the steps taken per day, corrected for NaNs, is `r sprintf('%.2f', mean(dfnanDay$steps))`.
+The mean of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', mean(dfnanDay$steps))`.
 
-The median of the steps taken per day,corrected for NaNs, is `r sprintf('%.2f', median(dfnanDay$steps))`.
+The median of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', median(dfnanDay$steps))`.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -112,4 +126,6 @@ xyplot(steps ~ interval | dayofweek, data=dfweMin, type='l', layout=c(1, 2),
        xlab='Interval', ylab='Number of steps')
 ```
 
-Indded: on weekends, the number of paces is more evenly distributed across the day, and the maximum number of steps is less than on weekdays.
+Indeed: on weekends, the number of paces is more evenly distributed across the day, and overall there is less walking on weekdays than on weekends.
+
+---
