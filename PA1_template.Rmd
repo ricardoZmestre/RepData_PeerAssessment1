@@ -72,7 +72,7 @@ The corresponding period is `r arrange(dfmeanMin, -steps)[[1,1]]`.
 
 NA imputations using linear fit.
 
-```{r question 3, results='asis'}
+```{r NA allocation, results='asis'}
 ### Question 3
 
 library(xtable)
@@ -93,7 +93,7 @@ dfnanDay <- dfnan %>%
 
 ```
 
-```{r histogram}
+```{r question 3}
 hist(dfnanDay$steps, col='lightblue', breaks=10,
      main = 'Histogram', xlab='Mean Steps Per Day')
 
