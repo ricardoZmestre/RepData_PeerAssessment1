@@ -30,15 +30,11 @@ The corresponding period is 835.
 
 ## Imputing missing values
 
-NA imputations using linear fit.
+NA imputations using overall mean.
 
-<!-- html table generated in R 3.2.0 by xtable 1.7-4 package -->
-<!-- Sun May 10 23:03:51 2015 -->
-<table border=1>
-<tr> <th>  </th> <th> Estimate </th> <th> Std. Error </th> <th> t value </th> <th> Pr(&gt;|t|) </th>  </tr>
-  <tr> <td align="right"> (Intercept) </td> <td align="right"> 29.5539 </td> <td align="right"> 1.7868 </td> <td align="right"> 16.54 </td> <td align="right"> 0.0000 </td> </tr>
-  <tr> <td align="right"> interval </td> <td align="right"> 0.0066 </td> <td align="right"> 0.0013 </td> <td align="right"> 5.08 </td> <td align="right"> 0.0000 </td> </tr>
-   </table>
+
+
+
 
 ![](PA1_template_files/figure-html/question 3-1.png) 
 

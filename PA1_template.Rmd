@@ -70,26 +70,40 @@ The corresponding period is `r arrange(dfmeanMin, -steps)[[1,1]]`.
 
 ## Imputing missing values
 
-NA imputations using linear fit.
+NA imputations using overall mean.
 
-```{r NA allocation, results='asis'}
+```{r NA allocation, tidy=FALSE}
 ### Question 3
-
-library(xtable)
 
 dfnan <- df
 # Filling out with overall mean of steps
 dfnan$steps[is.na(df$steps)] <- mean(df$steps, na.rm=TRUE)
 
-# Filling out with linear regression
-msteps <- lm(steps ~ interval, data=df, na.action=na.exclude)
-print(xtable(msteps), type=, 'html')
-fit <- predict(msteps, dfnan)
-dfnan$steps[is.na(df$steps)] <- fit[is.na(df$steps)]
+## Filling out with linear regression
+#msteps <- lm(steps ~ interval, data=df, na.action=na.exclude)
+#print(xtable(msteps), type=, 'html')
+#fit <- predict(msteps, dfnan)
+#dfnan$steps[is.na(df$steps)] <- fit[is.na(df$steps)]
+
+#msteps <- lm(log(steps+1) ~ scale(interval) + I(scale(interval)^2) + 
+#               factor(weekdays(df$date)) - 1, data=df, na.action=na.exclude)
+#kable(summary(msteps)$coeff)
+#fit <- predict(msteps, df)
+#dfnan <- df
+#dfnan$steps[is.na(df$steps)] <- exp(fit[is.na(df$steps)])-1
 
 dfnanDay <- dfnan %>%
   group_by(date) %>%
   summarise(steps=sum(steps))
+
+```
+
+```{r table NA allocation, results='asis'}
+### Question 3
+
+#library(xtable)
+
+#print(xtable(msteps), type='html')
 
 ```
 
