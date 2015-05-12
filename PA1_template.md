@@ -14,7 +14,7 @@ Histogram of the number of steps taken per day.
 
 ![](PA1_template_files/figure-html/question_1-1.png) 
 
-The overall total number of steps taken per day is 570608.
+The overall total number of steps taken per day (which is the same as the overall number of steps *tout court*) is 570608.
 
 The mean of the steps taken per day is 10766.19.
 
@@ -24,14 +24,15 @@ The median of the steps taken per day is 10765.00.
 
 ![](PA1_template_files/figure-html/question 2-1.png) 
 
-The maximum mean number of steps per day is 206.17.
+The maximum mean number of steps per interval is 206.17.
 
-The corresponding period is 835.
+The corresponding interval is 835.
+
+These are the mean steps and interval for which a maximum is reached.
 
 ## Imputing missing values
 
-NA imputations using overall mean.
-
+NA imputation is done separately per interval, i.e. each interval with NA is imputed the same number of steps as the mean for that same interval. For instance, an NA appearing in (say) interval 1800 will be replaced by the mean of all intervals 1800 in the dataset for which data are available. This imputation is simple enough but at the same time takes into account that some periods in the day have specificities, such as NA or zero steps during most of the night.
 
 
 
