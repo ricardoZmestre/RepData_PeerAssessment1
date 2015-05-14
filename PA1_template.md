@@ -41,9 +41,45 @@ NA imputation is done separately per interval, i.e. each interval with NA is imp
 
 The number of Nas in the original dataset is 2304.
 
-The mean of the steps taken per day, corrected for Nas, is 10766.19.
+The mean of the steps taken per day, corrected for Nas, is 10766.19. Note that the mean has not changed: this is the consequence of the fact that NAs are evenly distributed by intervals, with 8 NAs per interval, and that each imputed interval  has by construction the same mean as the same interval with observations. This implies that the numbers introduced into the data frame have the same overall mean as the original numbers (barring NAs), hence the resulting mean is also not changed.
 
-The median of the steps taken per day, corrected for Nas, is 10766.19.
+The median of the steps taken per day, corrected for Nas, is 10766.19. Note now that the median has changed and is now similar to the mean. This is because we have, in the NA imputation, added numbers which are by construction closer to the centre of the distribution (because of the law of large numbers), bringing the median closer to the mean.
+
+Just to check, the deciles of the original data (averaged per day) were:
+
+
+-----  --------
+0%         41.0
+10%      5102.6
+20%      8342.4
+30%      9867.6
+40%     10279.8
+50%     10765.0
+60%     11830.0
+70%     12796.6
+80%     13571.6
+90%     15107.6
+100%    21194.0
+-----  --------
+
+<br>And they are now:
+
+
+-----  ---------
+0%         41.00
+10%      5441.00
+20%      8821.00
+30%     10119.00
+40%     10571.00
+50%     10766.19
+60%     11162.00
+70%     12426.00
+80%     13452.00
+90%     15098.00
+100%    21194.00
+-----  ---------
+
+<br>Note that the 50% percentile corresponds to the median.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

@@ -99,9 +99,23 @@ hist(dfnanDay$steps, col='lightblue', breaks=10,
 
 The number of Nas in the original dataset is `r sum(is.na(df$steps))`.
 
-The mean of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', mean(dfnanDay$steps))`.
+The mean of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', mean(dfnanDay$steps))`. Note that the mean has not changed: this is the consequence of the fact that NAs are evenly distributed by intervals, with `r sum(is.na(subset(df, is.na(steps & interval==0))))` NAs per interval, and that each imputed interval  has by construction the same mean as the same interval with observations. This implies that the numbers introduced into the data frame have the same overall mean as the original numbers (barring NAs), hence the resulting mean is also not changed.
 
-The median of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', median(dfnanDay$steps))`.
+The median of the steps taken per day, corrected for Nas, is `r sprintf('%.2f', median(dfnanDay$steps))`. Note now that the median has changed and is now similar to the mean. This is because we have, in the NA imputation, added numbers which are by construction closer to the centre of the distribution (because of the law of large numbers), bringing the median closer to the mean.
+
+Just to check, the deciles of the original data (averaged per day) were:
+
+```{r check median original}
+kable(quantile(dfDay$steps, na.rm=TRUE, probs=seq(from=0, to=1, by=0.1)))
+```
+
+<br>And they are now:
+
+```{r check median imputed}
+kable(quantile(dfnanDay$steps, probs=seq(from=0, to=1, by=0.1)))
+```
+
+<br>Note that the 50% percentile corresponds to the median.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
